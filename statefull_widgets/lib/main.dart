@@ -84,7 +84,7 @@ class _MyLargeTitleState extends State<MyLargeTitle> {
     print("build!");
     return Text(
       "My Large Title",
-      style: TextStyle(
+      style: TextStyle( 
           fontSize: 25,
           fontWeight: FontWeight.w500,
           color: Theme.of(context).textTheme.titleLarge!.color),
