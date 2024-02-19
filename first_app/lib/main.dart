@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter First App',
       theme: ThemeData(useMaterial3: true),
-      home: Scaffold(
+      home: Scaffold(           
         appBar: AppBar(
           title: const Text('Welcome to Flutter'),
         ),
