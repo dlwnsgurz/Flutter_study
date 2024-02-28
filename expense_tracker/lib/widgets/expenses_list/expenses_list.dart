@@ -15,10 +15,7 @@ class ExpensesList extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) => Dismissible(
         key: ValueKey(expenses[index]),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ExpenseItem(expenses[index]),
-        ),
+        child: ExpenseItem(expenses[index]),
         onDismissed: (direction) {
           onRemoveExpense(expenses[index]);
         },

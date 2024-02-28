@@ -26,6 +26,7 @@ class _ExpensesState extends State<Expenses> {
         category: Category.leisure),
   ];
 
+  // 제거
   void _removeExpense(Expense expense) {
     final expenseIndex = _registedExpenses.indexOf(expense);
     setState(() {
@@ -49,6 +50,7 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
+  // 추가
   void _addExpense(Expense expense) {
     setState(() {
       _registedExpenses.add(expense);
