@@ -81,7 +81,12 @@ class _ExpensesState extends State<Expenses> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: const Text("Flutter ExpenseTrackers"),
+        title: const Text(
+          "Flutter ExpenseTrackers",
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
