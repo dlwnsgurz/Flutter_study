@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:expense_tracker/models/expense.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
@@ -16,6 +19,48 @@ class _NewExpenseState extends State<NewExpense> {
   DateTime? _selectedDate;
   Category _selectedCategory = Category.food;
 
+  void _showDialog() {
+    if (Platform.isAndroid) {
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: const Text("Alert"),
+          content: const Text(
+              "please make sure a valid title, amount, date and category was entered.."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+    } else if (Platform.isAndroid) {
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            actionsAlignment: MainAxisAlignment.center,
+            title: const Text("Alert"),
+            content: const Text(
+                "please make sure a valid title, amount, date and category was entered.."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    return;
+  }
+
   void _submitExpenseDate() {
     final enteredAmount = double.tryParse(_amountController.text);
     final isInvalidAmount = enteredAmount == null || enteredAmount <= 0;
@@ -23,7 +68,23 @@ class _NewExpenseState extends State<NewExpense> {
     if (_titleController.text.trim().isEmpty ||
         isInvalidAmount ||
         _selectedDate == null) {
-      // show error message
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: const Text("Alert"),
+          content: const Text(
+              "please make sure a valid title, amount, date and category was entered.."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+
       showDialog(
         context: context,
         builder: (ctx) {
@@ -45,6 +106,7 @@ class _NewExpenseState extends State<NewExpense> {
       );
       return;
     }
+
     widget.onAddExpense(
       Expense(
         amount: enteredAmount,
