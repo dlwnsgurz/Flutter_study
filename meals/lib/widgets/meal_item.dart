@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealItem extends StatelessWidget {
   const MealItem({
     super.key,
     required this.meal,
+    required this.onSelect,
   });
 
   final Meal meal;
+  final void Function(Meal meal, BuildContext) onSelect;
+
+  String get complexityText {
+    return meal.complexity.name[0].toUpperCase() +
+        meal.complexity.name.substring(1);
+  }
+
+  String get affordabilityText {
+    return meal.affordability.name[0].toUpperCase() +
+        meal.affordability.name.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -19,7 +33,9 @@ class MealItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 10,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelect(meal, context);
+        },
         child: Stack(
           children: [
             FadeInImage(
@@ -53,8 +69,27 @@ class MealItem extends StatelessWidget {
                     const SizedBox(
                       height: 12,
                     ),
-                    const Row(
-                      children: [],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MealItemTrait(
+                            label: "${meal.duration} min",
+                            icon: Icons.schedule),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        MealItemTrait(
+                          label: complexityText,
+                          icon: Icons.work,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        MealItemTrait(
+                          label: affordabilityText,
+                          icon: Icons.attach_money,
+                        ),
+                      ],
                     )
                   ],
                 ),
