@@ -32,11 +32,11 @@ class CategoriesScreen extends StatelessWidget {
           childAspectRatio: 1.5,
         ),
         children: [
-          for (final data in availableCategories)
+          for (final category in availableCategories)
             CategoryGridItem(
-              category: data,
+              category: category,
               onSelect: () {
-                _selectCategory(context, data);
+                _selectCategory(context, category);
               },
             ),
         ],
