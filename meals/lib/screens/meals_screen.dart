@@ -15,7 +15,7 @@ class MealsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget mainContent = ListView.builder(
-      itemCount: dummyMeals.length,
+      itemCount: meals.length,
       itemBuilder: ((context, index) {
         return Text(meals[index].title);
       }),
