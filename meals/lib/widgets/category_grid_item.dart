@@ -18,7 +18,7 @@ class CategoryGridItem extends StatelessWidget {
         onSelect();
       },
       splashColor: Theme.of(context).primaryColor,
-      //borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
