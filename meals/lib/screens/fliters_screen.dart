@@ -9,6 +9,9 @@ class FiltersScreen extends StatefulWidget {
 
 class _FiltersScreenState extends State<FiltersScreen> {
   var _glutenFreeFilterSet = false;
+  var _lactoseFreeFilterSet = false;
+  var _vegetarianFreeFilterSet = false;
+  var _veganFreeFilterSet = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,75 @@ class _FiltersScreenState extends State<FiltersScreen> {
             ),
             subtitle: Text(
               "Only Include Gluten-Free Meals",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          SwitchListTile(
+            onChanged: (isChecked) {
+              setState(() {
+                _lactoseFreeFilterSet = isChecked;
+              });
+            },
+            value: _lactoseFreeFilterSet,
+            title: Text(
+              "Lactose Free",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+            subtitle: Text(
+              "Only Include Lactose-Free Meals",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          SwitchListTile(
+            onChanged: (isChecked) {
+              setState(() {
+                _vegetarianFreeFilterSet = isChecked;
+              });
+            },
+            value: _vegetarianFreeFilterSet,
+            title: Text(
+              "Vegetarian",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+            subtitle: Text(
+              "Only Include Vegetarian Meals",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          SwitchListTile(
+            onChanged: (isChecked) {
+              setState(() {
+                _veganFreeFilterSet = isChecked;
+              });
+            },
+            value: _veganFreeFilterSet,
+            title: Text(
+              "Vegan",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+            subtitle: Text(
+              "Only Include Vegen Meals",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.tertiary,
                 fontSize: 14,
