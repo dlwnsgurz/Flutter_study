@@ -5,7 +5,7 @@ import 'package:meals/models/meal.dart';
 import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/category_grid_item.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({
     super.key,
     required this.availableMeals,
@@ -13,8 +13,16 @@ class CategoriesScreen extends StatelessWidget {
 
   final List<Meal> availableMeals;
 
+  @override
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
   void _selectCategory(BuildContext context, Category category) {
-    final meals = availableMeals
+    final meals = widget.availableMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
 
@@ -31,24 +39,52 @@ class CategoriesScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-        childAspectRatio: 1.5,
+    print("빌더 메소드");
+    return AnimatedBuilder(
+      animation: _animationController,
+      child: GridView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          childAspectRatio: 1.5,
+        ),
+        children: [
+          for (final category in availableCategories)
+            CategoryGridItem(
+              category: category,
+              onSelect: () {
+                _selectCategory(context, category);
+              },
+            ),
+        ],
       ),
-      children: [
-        for (final category in availableCategories)
-          CategoryGridItem(
-            category: category,
-            onSelect: () {
-              _selectCategory(context, category);
-            },
-          ),
-      ],
+      builder: (context, child) {
+        print("콜백 메소드");
+        return Padding(
+          padding: EdgeInsets.only(top: 100 - _animationController.value * 100),
+          child: child,
+        );
+      },
     );
   }
 }
