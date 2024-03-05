@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/models/category.dart';
 
 class NewItemScreen extends StatefulWidget {
   const NewItemScreen({super.key});
@@ -10,9 +11,15 @@ class NewItemScreen extends StatefulWidget {
 
 class _NewItemScreenState extends State<NewItemScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  var _enteredName = "";
+  var _enteredQuantity = 1;
+  var _selectedCategory = categories[Categories.vegetables]!;
   void _saveItem() {
-    _formKey.currentState!.validate();
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    _formKey.currentState!.save();
   }
 
   @override
@@ -41,6 +48,9 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   }
                   return null;
                 },
+                onSaved: (value) {
+                  _enteredName = value!;
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -58,6 +68,9 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             int.tryParse(value) == null ||
                             int.tryParse(value)! <= 0) return "1이상의 수를 입력해주세요.";
                         return null;
+                      },
+                      onSaved: (value) {
+                        _enteredQuantity = int.tryParse(value!)!;
                       },
                     ),
                   ),
@@ -83,7 +96,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             ),
                           )
                       ],
-                      onChanged: (e) {},
+                      value: _selectedCategory,
+                      onChanged: (value) {
+                        _selectedCategory = value!;
+                      },
                     ),
                   )
                 ],
