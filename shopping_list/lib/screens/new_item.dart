@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
-import 'package:shopping_list/models/category.dart';
 
 class NewItemScreen extends StatefulWidget {
   const NewItemScreen({super.key});
@@ -10,6 +9,12 @@ class NewItemScreen extends StatefulWidget {
 }
 
 class _NewItemScreenState extends State<NewItemScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  void _saveItem() {
+    _formKey.currentState!.validate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +24,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -27,9 +33,13 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 decoration: const InputDecoration(
                   label: Text("Name"),
                 ),
-                validator: (str) {
-                  print(str);
-                  return 'Demo';
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.trim().length <= 1) {
+                    return "1글자 이상 50글자 이하로 입력해주세요.";
+                  }
+                  return null;
                 },
               ),
               Row(
@@ -37,10 +47,18 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         label: Text("Quantity"),
                       ),
                       initialValue: "1",
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) == null ||
+                            int.tryParse(value)! <= 0) return "1이상의 수를 입력해주세요.";
+                        return null;
+                      },
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -67,6 +85,24 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       ],
                       onChanged: (e) {},
                     ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _formKey.currentState!.reset();
+                    },
+                    child: const Text("Reset"),
+                  ),
+                  ElevatedButton(
+                    onPressed: _saveItem,
+                    child: const Text("Add Item "),
                   )
                 ],
               )
