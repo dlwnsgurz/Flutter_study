@@ -16,12 +16,10 @@ class GroceryItem extends StatelessWidget {
     return ListTile(
       title: Text(title),
       iconColor: color,
-      leading: ColoredBox(
+      leading: Container(
+        width: 20,
+        height: 20,
         color: color,
-        child: const SizedBox(
-          width: 20,
-          height: 20,
-        ),
       ),
       trailing: Text(
         quantity.toString(),
