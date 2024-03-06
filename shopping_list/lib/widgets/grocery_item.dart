@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class GroceryItem extends StatelessWidget {
-  const GroceryItem(
+class GroceryListItem extends StatelessWidget {
+  const GroceryListItem(
       {super.key,
       required this.title,
       required this.color,
