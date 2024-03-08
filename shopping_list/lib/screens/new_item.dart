@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopping_list/models/grocery_item.dart';
 
 class NewItemScreen extends StatefulWidget {
   const NewItemScreen({super.key});
@@ -39,16 +40,17 @@ class _NewItemScreenState extends State<NewItemScreen> {
         },
       ),
     );
-
-    // Navigator.of(context).pop(
-    //   GroceryItem(
-    //       id: DateTime.now().toString(),
-    //       name: _enteredName,
-    //       quantity: _enteredQuantity,
-    //       category: _selectedCategory),
-    // );
     if (!context.mounted) return;
-    Navigator.of(context).pop();
+
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+    Navigator.of(context).pop(
+      GroceryItem(
+          id: responseData["name"],
+          name: _enteredName,
+          quantity: _enteredQuantity,
+          category: _selectedCategory),
+    );
   }
 
   @override
