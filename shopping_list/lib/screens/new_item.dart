@@ -40,9 +40,6 @@ class _NewItemScreenState extends State<NewItemScreen> {
       ),
     );
 
-    print(response.statusCode);
-    print(response.body);
-
     // Navigator.of(context).pop(
     //   GroceryItem(
     //       id: DateTime.now().toString(),
