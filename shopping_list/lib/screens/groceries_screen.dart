@@ -31,13 +31,11 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
     final response = await http.get(url);
     if (response.statusCode >= 400) {
       _error = "에러가 발생했어요. 다시 시도해주세요!";
-      return;
     }
     final Map<String, dynamic>? listData = json.decode(response.body);
-    if (listData == null) return;
 
     final List<GroceryItem> loadedItems = [];
-    for (final item in listData.entries) {
+    for (final item in listData!.entries) {
       final category = categories.entries.firstWhere(
         (element) {
           return element.value.name == item.value["category"];
@@ -73,6 +71,21 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
     );
   }
 
+  void _removeItem(GroceryItem item) async {
+    final index = _groceryItems.indexOf(item);
+    setState(() {
+      _groceryItems.remove(item);
+    });
+    final url = Uri.https("shopping-flutter-d8993-default-rtdb.firebaseio.com",
+        "shopping-list/${item.id}.json");
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget mainContent = ListView.builder(
@@ -80,7 +93,7 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
       itemBuilder: (ctx, index) => Dismissible(
         key: ValueKey(_groceryItems[index].id),
         onDismissed: (direction) {
-          _groceryItems.removeAt(index);
+          _removeItem(_groceryItems[index]);
         },
         background: Container(
           color: Colors.red.shade300,
@@ -117,11 +130,11 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
       mainContent = const Center(child: CircularProgressIndicator());
     }
 
-    if (_error == null) {
-      mainContent = const Center(
+    if (_error != null) {
+      mainContent = Center(
         child: Text(
-          "Add New Item!",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          _error!,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
       );
     }
