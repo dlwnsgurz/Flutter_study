@@ -23,8 +23,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
     }
 
     _formKey.currentState!.save();
-    final url = Uri.https(
-        "shopping-flutter-d8993-default-rtdb.firebaseio.com", "item.json");
+    final url = Uri.https("shopping-flutter-d8993-default-rtdb.firebaseio.com",
+        "shopping-list.json");
 
     final response = await http.post(
       url,
@@ -50,6 +50,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
     //       quantity: _enteredQuantity,
     //       category: _selectedCategory),
     // );
+    if (!context.mounted) return;
+    Navigator.of(context).pop();
   }
 
   @override
