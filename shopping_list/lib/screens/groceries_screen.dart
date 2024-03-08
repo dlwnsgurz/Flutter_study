@@ -17,6 +17,7 @@ class GroceriesScreen extends StatefulWidget {
 class _GroceriesScreenState extends State<GroceriesScreen> {
   List<GroceryItem> _groceryItems = [];
   var _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
@@ -28,6 +29,10 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
     final url = Uri.https("shopping-flutter-d8993-default-rtdb.firebaseio.com",
         "shopping-list.json");
     final response = await http.get(url);
+    if (response.statusCode >= 400) {
+      _error = "에러가 발생했어요. 다시 시도해주세요!";
+      return;
+    }
     final Map<String, dynamic>? listData = json.decode(response.body);
     if (listData == null) return;
 
@@ -110,6 +115,15 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
     }
     if (_isLoading) {
       mainContent = const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error == null) {
+      mainContent = const Center(
+        child: Text(
+          "Add New Item!",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        ),
+      );
     }
     return Scaffold(
         appBar: AppBar(
