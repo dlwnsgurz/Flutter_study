@@ -16,6 +16,7 @@ class GroceriesScreen extends StatefulWidget {
 
 class _GroceriesScreenState extends State<GroceriesScreen> {
   List<GroceryItem> _groceryItems = [];
+  var _isLoading = true;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
           category: category));
     }
     setState(() {
+      _isLoading = false;
       _groceryItems = loadedItems;
     });
   }
@@ -105,6 +107,9 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
       );
+    }
+    if (_isLoading) {
+      mainContent = const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
         appBar: AppBar(

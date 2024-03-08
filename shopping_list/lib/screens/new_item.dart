@@ -14,16 +14,22 @@ class NewItemScreen extends StatefulWidget {
 
 class _NewItemScreenState extends State<NewItemScreen> {
   final _formKey = GlobalKey<FormState>();
+
   var _enteredName = "";
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
 
+  var _isSending = false;
   void _saveItem() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     _formKey.currentState!.save();
+
+    setState(() {
+      _isSending = true;
+    });
     final url = Uri.https("shopping-flutter-d8993-default-rtdb.firebaseio.com",
         "shopping-list.json");
 
@@ -142,14 +148,18 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      _formKey.currentState!.reset();
-                    },
+                    onPressed: _isSending
+                        ? null
+                        : () {
+                            _formKey.currentState!.reset();
+                          },
                     child: const Text("Reset"),
                   ),
                   ElevatedButton(
-                    onPressed: _saveItem,
-                    child: const Text("Add Item "),
+                    onPressed: _isSending ? null : _saveItem,
+                    child: _isSending
+                        ? const CircularProgressIndicator()
+                        : const Text("Add Item "),
                   )
                 ],
               )
