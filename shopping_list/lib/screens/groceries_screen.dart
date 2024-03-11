@@ -28,30 +28,44 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
   void _loadItems() async {
     final url = Uri.https("shopping-flutter-d8993-default-rtdb.firebaseio.com",
         "shopping-list.json");
-    final response = await http.get(url);
-    if (response.statusCode >= 400) {
-      _error = "에러가 발생했어요. 다시 시도해주세요!";
-    }
-    final Map<String, dynamic>? listData = json.decode(response.body);
+    try {
+      final response = await http.get(url);
+      if (response.statusCode >= 400) {
+        setState(() {
+          _error = "에러가 발생했어요. 다시 시도해주세요!";
+        });
+      }
+      if (response.body == "null") {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
 
-    final List<GroceryItem> loadedItems = [];
-    for (final item in listData!.entries) {
-      final category = categories.entries.firstWhere(
-        (element) {
-          return element.value.name == item.value["category"];
-        },
-      ).value;
+      final Map<String, dynamic> listData = json.decode(response.body);
+      final List<GroceryItem> loadedItems = [];
+      for (final item in listData.entries) {
+        final category = categories.entries.firstWhere(
+          (element) {
+            return element.value.name == item.value["category"];
+          },
+        ).value;
 
-      loadedItems.add(GroceryItem(
-          id: item.key,
-          name: item.value["name"],
-          quantity: item.value["quantity"],
-          category: category));
+        loadedItems.add(GroceryItem(
+            id: item.key,
+            name: item.value["name"],
+            quantity: item.value["quantity"],
+            category: category));
+      }
+      setState(() {
+        _isLoading = false;
+        _groceryItems = loadedItems;
+      });
+    } catch (error) {
+      setState(() {
+        _error = "Something went Wrong! Please Try agian Later!";
+      });
     }
-    setState(() {
-      _isLoading = false;
-      _groceryItems = loadedItems;
-    });
   }
 
   void _addItem() async {
@@ -134,7 +148,11 @@ class _GroceriesScreenState extends State<GroceriesScreen> {
       mainContent = Center(
         child: Text(
           _error!,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       );
     }
