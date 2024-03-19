@@ -1,5 +1,6 @@
 import 'package:favorite_places/screens/places_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod/riverpod.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
@@ -35,8 +36,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Great Places',
-        theme: theme,
-        home: const MaterialApp(home: PlacesListScreen()));
+      title: 'Great Places',
+      theme: theme,
+      home: const PlacesListScreen(),
+    );
   }
 }
