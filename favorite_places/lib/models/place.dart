@@ -4,7 +4,7 @@ const uuid = Uuid();
 
 class FavoritePlace {
   final String id;
-  final String name;
+  final String title;
 
-  FavoritePlace({required this.name}) : id = uuid.v4();
+  FavoritePlace({required this.title}) : id = uuid.v4();
 }
