@@ -46,7 +46,9 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                 labelText: "Title",
               ),
             ),
-            const SizedBox(height: 10,)
+            const SizedBox(
+              height: 10,
+            ),
             const ImageInput(),
             const SizedBox(
               height: 20,
